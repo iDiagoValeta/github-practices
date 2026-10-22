@@ -1,0 +1,15 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": {
+    "bash": {
+      "*": "allow",
+      "gh api *-X *": "ask",
+      "gh api *--method *": "ask",
+      "gh repo edit *": "ask",
+      "gh label create *": "ask",
+      "gh label delete *": "ask",
+      "gh pr merge *": "ask",
+      "git push *": "ask"
+    }
+  }
+}

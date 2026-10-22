@@ -1,0 +1,33 @@
+{
+  "evals": [
+    {
+      "query": "Audit my personal repo and leave it properly configured.",
+      "expected_behavior": [
+        "Runs the audit in read-only mode before proposing changes.",
+        "Recommends TBD (main only, short branches, squash) because it is a personal repo, and explains why.",
+        "Presents the findings by severity and states what could not be checked.",
+        "Creates no files, runs no remote commands and changes nothing without an explicit OK.",
+        "Proposes the application plan on the internal/github-practices-setup branch with a draft PR."
+      ]
+    },
+    {
+      "query": "Protect the main branch of my repo.",
+      "expected_behavior": [
+        "Shows the exact command that applies the ruleset to the default branch, with the TBD or Gitflow JSON depending on the repo model.",
+        "Shows how to list the ruleset to get its id and the command that undoes it.",
+        "Explains which rules it includes and warns that status checks are added after the workflow.",
+        "Asks for an explicit OK before running and runs nothing in that turn.",
+        "If the repo is private without a compatible plan and the API returns 403, declares it instead of failing."
+      ]
+    },
+    {
+      "query": "Is the branch feature/login valid for the repo my-repo?",
+      "expected_behavior": [
+        "Uses scripts/branch_name.py to validate the branch against the repo name, instead of answering from memory.",
+        "Reports that the issue is missing and that the expected format is <prefix>/<ISSUE>-<context>.",
+        "Proposes a valid alternative, for example feature/GH-12-login, and checks the 63 character limit with the repo name.",
+        "Explains that internal/, revert/ and automated/ are the only prefixes that may go without an issue."
+      ]
+    }
+  ]
+}

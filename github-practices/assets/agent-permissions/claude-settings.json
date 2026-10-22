@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "ask": [
+      "Bash(gh api -X *)",
+      "Bash(gh api * -X *)",
+      "Bash(gh api --method *)",
+      "Bash(gh api * --method *)",
+      "Bash(gh repo edit *)",
+      "Bash(gh label create *)",
+      "Bash(gh label delete *)",
+      "Bash(gh pr merge *)",
+      "Bash(git push *)"
+    ]
+  }
+}

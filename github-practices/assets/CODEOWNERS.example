@@ -1,0 +1,11 @@
+# Code owners: the last rule matching the path is used.
+# Copy this file to .github/CODEOWNERS and replace @owner with real users
+# or teams. Without a protected branch that requires code owner review, it
+# only notifies, it does not block the merge.
+
+# The whole repo, as a safety net.
+*       @owner
+
+# Areas with a different owner. Uncomment and adjust.
+# /docs/  @owner
+# /.github/  @owner
