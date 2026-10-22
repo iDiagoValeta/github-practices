@@ -1,0 +1,15 @@
+{
+  "name": "github-practices",
+  "description": "Claude Code / OpenCode skill that audits a GitHub repo against best practices (branch protection, rulesets, Conventional Commits, PR and issue templates, Dependabot, release-please) and applies only approved fixes",
+  "owner": {
+    "name": "Ignacio Diago Valeta",
+    "url": "https://github.com/iDiagoValeta"
+  },
+  "plugins": [
+    {
+      "name": "github-practices",
+      "source": "./",
+      "description": "Claude Code / OpenCode skill that audits a GitHub repo against best practices (branch protection, rulesets, Conventional Commits, PR and issue templates, Dependabot, release-please) and applies only approved fixes"
+    }
+  ]
+}

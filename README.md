@@ -25,13 +25,27 @@ Every finding carries a severity (high, medium, low or info). When something can
 
 ## Quick start
 
+In Claude Code 2.1.275 or later:
+
+```text
+/plugin install github-practices --marketplace iDiagoValeta/github-practices
+```
+
+In OpenCode:
+
+```bash
+npx skills add iDiagoValeta/github-practices -a opencode
+```
+
+Or clone and run `./install.sh`:
+
 ```bash
 git clone https://github.com/iDiagoValeta/github-practices.git
 cd github-practices
 ./install.sh
 ```
 
-Then run `/github-practices` in Claude Code or OpenCode.
+Then run `/github-practices:github-practices` if you installed the plugin, or `/github-practices` if you used `npx skills`, `gh skill` or `install.sh`.
 
 ## Example
 
@@ -64,23 +78,64 @@ Real output of `python3 github-practices/scripts/audit.py --path . --repo iDiago
 
 ## Install
 
-### Claude Code
+### Claude Code (plugin)
+
+One step on Claude Code 2.1.275 or later:
+
+```text
+/plugin install github-practices --marketplace iDiagoValeta/github-practices
+```
+
+Two steps on any version with plugins:
 
 ```bash
+claude plugin marketplace add iDiagoValeta/github-practices
+claude plugin install github-practices@github-practices
+```
+
+The marketplace is the repo itself, so there is nothing else to host. As a plugin the skill is invoked as `/github-practices:github-practices`; installed with `install.sh` or `gh skill` it is `/github-practices`.
+
+To remove the plugin and its marketplace entry:
+
+```bash
+claude plugin marketplace remove github-practices
+```
+
+It also uninstalls the plugins it provided and deletes their saved options and data.
+
+### OpenCode and other agents
+
+The skills CLI (vercel-labs/skills) installs the skill where the agent reads it:
+
+```bash
+npx skills add iDiagoValeta/github-practices -a opencode
+```
+
+`pnpm dlx skills add iDiagoValeta/github-practices -a opencode` does the same. Project scope installs into `.agents/skills/github-practices/`, which OpenCode reads.
+
+A recent GitHub CLI with the skill command in preview installs it for any of 40+ agents, Claude Code and OpenCode included:
+
+```bash
+gh skill install iDiagoValeta/github-practices github-practices --agent opencode --scope user
+```
+
+Use `--agent claude-code` for Claude Code.
+
+### Manual
+
+Clone the repo and run the installer:
+
+```bash
+git clone https://github.com/iDiagoValeta/github-practices.git
+cd github-practices
 ./install.sh
 ```
 
 It creates the symlink `~/.claude/skills/github-practices` pointing to `github-practices/` in this repo. It is idempotent: if it already exists and points here, it does nothing; if something else exists at that path, it aborts without deleting it.
 
-### OpenCode
+OpenCode also reads `~/.claude/skills/`, so the same command works there.
 
-OpenCode also reads `~/.claude/skills/`, so the same command works:
-
-```bash
-./install.sh
-```
-
-### Per project
+#### Per project
 
 Copy the skill into the repo where you want to use it:
 
@@ -91,7 +146,7 @@ cp -r /path/to/github-practices/github-practices .claude/skills/
 
 That way it is versioned with the project and available only there.
 
-### Uninstall
+#### Uninstall
 
 ```bash
 ./install.sh --uninstall
@@ -106,6 +161,8 @@ In Claude Code or OpenCode:
 ```text
 /github-practices
 ```
+
+Installed as a plugin, the same skill is `/github-practices:github-practices`.
 
 Or ask in natural language: "audit this repo", "protect main", "does this branch follow the convention?", "set up the issue and PR templates".
 
@@ -124,6 +181,7 @@ The block allows everything except the commands listed here: `gh api` with an ex
 
 ```text
 .
+├── .claude-plugin/                 Claude Code plugin and marketplace manifests
 ├── github-practices/
 │   ├── SKILL.md                    Entry point: flow, safety and file map
 │   ├── references/
@@ -168,6 +226,7 @@ The tests validate the audit and branch-name scripts, the format of `SKILL.md` (
 
 ## Requirements
 
+- Claude Code for the plugin install, or Node.js with `npx` for the skills CLI.
 - Python 3, standard library only. CI tests on Python 3.12.
 - `gh` CLI authenticated (`gh auth status`) for `audit.py`. Without it the audit exits 2 and says why.
 - `git`, to read the local templates and the last commits.

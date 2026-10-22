@@ -1,0 +1,30 @@
+{
+  "name": "github-practices",
+  "version": "1.0.0",
+  "description": "Claude Code / OpenCode skill that audits a GitHub repo against best practices (branch protection, rulesets, Conventional Commits, PR and issue templates, Dependabot, release-please) and applies only approved fixes",
+  "author": {
+    "name": "Ignacio Diago Valeta",
+    "url": "https://github.com/iDiagoValeta"
+  },
+  "homepage": "https://github.com/iDiagoValeta/github-practices",
+  "repository": "https://github.com/iDiagoValeta/github-practices",
+  "license": "MIT",
+  "keywords": [
+    "ai-agents",
+    "best-practices",
+    "branch-protection",
+    "codeowners",
+    "conventional-commits",
+    "dependabot",
+    "gitflow",
+    "github",
+    "opencode",
+    "release-please",
+    "repository-audit",
+    "rulesets",
+    "trunk-based-development"
+  ],
+  "skills": [
+    "./"
+  ]
+}
