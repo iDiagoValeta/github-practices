@@ -15,7 +15,7 @@ Every remote change is applied with one command and undone with another. Ask for
 
 ```bash
 REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner)
-SKILL=~/.claude/skills/github-practices
+SKILL="<skill-dir>"
 gh auth status
 gh api "repos/$REPO" --jq '{default_branch, allow_squash_merge, allow_merge_commit, allow_rebase_merge, delete_branch_on_merge, squash_merge_commit_title, squash_merge_commit_message}'
 # The merge methods undo reads these variables.
@@ -33,7 +33,7 @@ AUTOFIX=$(gh api "repos/$REPO/automated-security-fixes" --jq 'if .enabled then "
 echo "vulnerability-alerts=$VULN_ALERTS automated-security-fixes=$AUTOFIX"
 ```
 
-`SKILL` is the path installed by `install.sh` (`~/.claude/skills/github-practices`); it works the same for Claude Code and for OpenCode, which also reads that path.
+`SKILL` is `<skill-dir>`, the directory that holds this skill's `SKILL.md`: replace it with the same path `SKILL.md` uses to run the audit.
 
 Keep the output of the snapshot commands above: it is the state you return to if something goes wrong. You need admin permission; `gh api repos/$REPO --jq '.permissions.admin'` confirms it.
 

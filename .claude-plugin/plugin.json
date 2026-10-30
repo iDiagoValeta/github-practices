@@ -1,7 +1,7 @@
 {
   "name": "github-practices",
   "version": "1.0.0",
-  "description": "Claude Code / OpenCode skill that audits a GitHub repo against best practices (branch protection, rulesets, Conventional Commits, PR and issue templates, Dependabot, release-please) and applies only approved fixes",
+  "description": "Agent skill that audits a GitHub repo against best practices (branch protection, rulesets, Conventional Commits, PR and issue templates, Dependabot, release-please) and applies only approved fixes. Works with Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, OpenCode, Windsurf, ZCode and any agent that reads SKILL.md",
   "author": {
     "name": "Ignacio Diago Valeta",
     "url": "https://github.com/iDiagoValeta"
@@ -10,14 +10,20 @@
   "repository": "https://github.com/iDiagoValeta/github-practices",
   "license": "MIT",
   "keywords": [
+    "agent-skills",
     "ai-agents",
     "best-practices",
     "branch-protection",
+    "claude-code",
     "codeowners",
+    "codex",
     "conventional-commits",
+    "cursor",
     "dependabot",
+    "gemini-cli",
     "gitflow",
     "github",
+    "github-copilot",
     "opencode",
     "release-please",
     "repository-audit",

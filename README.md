@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/iDiagoValeta/github-practices/actions/workflows/ci.yml/badge.svg)](https://github.com/iDiagoValeta/github-practices/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-A Claude Code skill (also for OpenCode and other AI agents) that audits a GitHub repository against best practices and applies only the changes you approve. It is for anyone who maintains a repo and wants branch protection, templates, labels and releases set up right without reading every GitHub doc: install it, run `/github-practices` and review the report.
+An agent skill for AI coding agents that audits a GitHub repository against best practices and applies only the changes you approve. It works in Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, OpenCode, Windsurf, ZCode and any agent that reads the open [SKILL.md format](https://agentskills.io). It is for anyone who maintains a repo and wants branch protection, templates, labels and releases set up right without reading every GitHub doc: install it, ask your agent to audit the repo and review the report.
 
 ## What it checks
 
@@ -25,27 +25,21 @@ Every finding carries a severity (high, medium, low or info). When something can
 
 ## Quick start
 
-In Claude Code 2.1.275 or later:
-
-```text
-/plugin install github-practices --marketplace iDiagoValeta/github-practices
-```
-
-In OpenCode:
+Install with the skills CLI, naming your agent:
 
 ```bash
-npx skills add iDiagoValeta/github-practices -a opencode
+npx skills add iDiagoValeta/github-practices -a <agent>
 ```
 
-Or clone and run `./install.sh`:
+Or with the GitHub CLI, which needs a recent `gh` with the skill command in preview:
 
 ```bash
-git clone https://github.com/iDiagoValeta/github-practices.git
-cd github-practices
-./install.sh
+gh skill install iDiagoValeta/github-practices github-practices --agent <agent> --scope user
 ```
 
-Then run `/github-practices:github-practices` if you installed the plugin, or `/github-practices` if you used `npx skills`, `gh skill` or `install.sh`.
+`gh skill` supports every listed agent except Windsurf and ZCode, which use the skills CLI or `install.sh`.
+
+`<agent>` is one of `claude-code`, `codex`, `cursor`, `gemini-cli`, `github-copilot`, `opencode`, `windsurf` or `zcode`. See [Install](#install) for the install options for each agent, the manual symlink and how to invoke the skill.
 
 ## Example
 
@@ -78,9 +72,24 @@ Real output of `python3 github-practices/scripts/audit.py --path . --repo iDiago
 
 ## Install
 
-### Claude Code (plugin)
+Every agent reads the same `github-practices/` folder and the same `SKILL.md`; only the skills directory and the install command change. The table summarises the paths; the sections below give the commands for each agent, alphabetically.
 
-One step on Claude Code 2.1.275 or later:
+| Agent | `--agent` value | User dir | Project dir | How to invoke |
+|---|---|---|---|---|
+| Claude Code | `claude-code` | `~/.claude/skills` | `.claude/skills` | `/github-practices`, or `/github-practices:github-practices` as a plugin |
+| Codex | `codex` | `~/.agents/skills` | `.agents/skills` | `$github-practices`, or `/skills` to pick it |
+| Cursor | `cursor` | `~/.cursor/skills` | `.cursor/skills` or `.agents/skills` | type `/` in the Agent chat and pick `github-practices` |
+| Gemini CLI | `gemini-cli` | `~/.gemini/skills` | `.gemini/skills` or `.agents/skills` | activated from the description; `/skills list` shows it |
+| GitHub Copilot | `github-copilot` | `~/.copilot/skills` | `.github/skills`, `.claude/skills` or `.agents/skills` | loaded automatically when relevant |
+| OpenCode | `opencode` | `~/.config/opencode/skills` | `.opencode/skills`, `.claude/skills` or `.agents/skills` | `/github-practices` |
+| Windsurf | `windsurf` | `~/.codeium/windsurf/skills` | `.windsurf/skills` or `.agents/skills` | `/github-practices` |
+| ZCode | `zcode` | `~/.zcode/skills` | `.zcode/skills` | ask in natural language |
+
+Codex installs into the shared `~/.agents/skills`, which Cursor, Gemini CLI, GitHub Copilot, OpenCode and Windsurf also read. `pnpm dlx skills add` does the same as `npx skills add`; without `-g` the skills CLI installs into the project, and `-g` selects the user scope.
+
+### Claude Code
+
+Native plugin, one step on Claude Code 2.1.275 or later:
 
 ```text
 /plugin install github-practices --marketplace iDiagoValeta/github-practices
@@ -93,9 +102,7 @@ claude plugin marketplace add iDiagoValeta/github-practices
 claude plugin install github-practices@github-practices
 ```
 
-The marketplace is the repo itself, so there is nothing else to host. As a plugin the skill is invoked as `/github-practices:github-practices`; installed with `install.sh` or `gh skill` it is `/github-practices`.
-
-To remove the plugin and its marketplace entry:
+The marketplace is the repo itself, so there is nothing else to host. To remove the plugin and its marketplace entry:
 
 ```bash
 claude plugin marketplace remove github-practices
@@ -103,79 +110,241 @@ claude plugin marketplace remove github-practices
 
 It also uninstalls the plugins it provided and deletes their saved options and data.
 
-### OpenCode and other agents
+Skills CLI:
 
-The skills CLI (vercel-labs/skills) installs the skill where the agent reads it:
+```bash
+npx skills add iDiagoValeta/github-practices -a claude-code
+```
+
+GitHub CLI:
+
+```bash
+gh skill install iDiagoValeta/github-practices github-practices --agent claude-code --scope user
+```
+
+Manual:
+
+```bash
+./install.sh claude-code
+```
+
+It creates the symlink `~/.claude/skills/github-practices`. For one project, copy `github-practices/` into `.claude/skills/`.
+
+Invoke it as `/github-practices`, or as `/github-practices:github-practices` when installed as a plugin.
+
+### Codex
+
+Skills CLI:
+
+```bash
+npx skills add iDiagoValeta/github-practices -a codex
+```
+
+GitHub CLI:
+
+```bash
+gh skill install iDiagoValeta/github-practices github-practices --agent codex --scope user
+```
+
+Manual:
+
+```bash
+./install.sh codex
+```
+
+Codex reads the shared `~/.agents/skills`, so the link lives there. For one project, copy `github-practices/` into `.agents/skills/`.
+
+Invoke it as `$github-practices`, or run `/skills` and pick it from the list.
+
+### Cursor
+
+Skills CLI:
+
+```bash
+npx skills add iDiagoValeta/github-practices -a cursor
+```
+
+GitHub CLI:
+
+```bash
+gh skill install iDiagoValeta/github-practices github-practices --agent cursor --scope user
+```
+
+Manual:
+
+```bash
+./install.sh cursor
+```
+
+It creates the symlink `~/.cursor/skills/github-practices`. For one project, copy `github-practices/` into `.cursor/skills/` or `.agents/skills/`.
+
+Invoke it by typing `/` in the Agent chat and picking `github-practices`.
+
+### Gemini CLI
+
+Native installer:
+
+```bash
+gemini skills install https://github.com/iDiagoValeta/github-practices.git --consent
+```
+
+Add `--scope workspace` for the project. It finds the skill in the repo subfolder on its own.
+
+Skills CLI:
+
+```bash
+npx skills add iDiagoValeta/github-practices -a gemini-cli
+```
+
+GitHub CLI:
+
+```bash
+gh skill install iDiagoValeta/github-practices github-practices --agent gemini-cli --scope user
+```
+
+Manual:
+
+```bash
+./install.sh gemini-cli
+```
+
+It creates the symlink `~/.gemini/skills/github-practices`. For one project, copy `github-practices/` into `.gemini/skills/` or `.agents/skills/`.
+
+Gemini CLI activates it from the description when the request matches; `/skills list` shows it.
+
+### GitHub Copilot
+
+Skills CLI:
+
+```bash
+npx skills add iDiagoValeta/github-practices -a github-copilot
+```
+
+GitHub CLI:
+
+```bash
+gh skill install iDiagoValeta/github-practices github-practices --agent github-copilot --scope user
+```
+
+Manual:
+
+```bash
+./install.sh github-copilot
+```
+
+It creates the symlink `~/.copilot/skills/github-practices`. For one project, copy `github-practices/` into `.github/skills/`, `.claude/skills/` or `.agents/skills/`.
+
+GitHub Copilot loads it automatically when relevant.
+
+### OpenCode
+
+Skills CLI:
 
 ```bash
 npx skills add iDiagoValeta/github-practices -a opencode
 ```
 
-`pnpm dlx skills add iDiagoValeta/github-practices -a opencode` does the same. Project scope installs into `.agents/skills/github-practices/`, which OpenCode reads.
-
-A recent GitHub CLI with the skill command in preview installs it for any of 40+ agents, Claude Code and OpenCode included:
+GitHub CLI:
 
 ```bash
 gh skill install iDiagoValeta/github-practices github-practices --agent opencode --scope user
 ```
 
-Use `--agent claude-code` for Claude Code.
+Manual:
 
-### Manual
+```bash
+./install.sh opencode
+```
 
-Clone the repo and run the installer:
+It creates the symlink `~/.config/opencode/skills/github-practices`. For one project, copy `github-practices/` into `.opencode/skills/`, `.claude/skills/` or `.agents/skills/`.
+
+OpenCode also reads `~/.claude/skills/` and `~/.agents/skills/`. Invoke it as `/github-practices`.
+
+### Windsurf
+
+Skills CLI:
+
+```bash
+npx skills add iDiagoValeta/github-practices -a windsurf
+```
+
+`gh skill` does not support Windsurf; use the skills CLI or the manual install.
+
+Manual:
+
+```bash
+./install.sh windsurf
+```
+
+It creates the symlink `~/.codeium/windsurf/skills/github-practices`. For one project, copy `github-practices/` into `.windsurf/skills/` or `.agents/skills/`.
+
+Invoke it as `/github-practices`.
+
+### ZCode
+
+Skills CLI:
+
+```bash
+npx skills add iDiagoValeta/github-practices -a zcode
+```
+
+`gh skill` does not support ZCode; use the skills CLI or the manual install.
+
+Manual:
+
+```bash
+./install.sh zcode
+```
+
+It creates the symlink `~/.zcode/skills/github-practices`. For one project, copy `github-practices/` into `.zcode/skills/`.
+
+Ask ZCode in natural language, for example "audit this repo".
+
+### Any other agent
+
+Any agent that reads the open SKILL.md format works the same way: copy the `github-practices/` folder into the skills directory your agent documents.
+
+```bash
+git clone https://github.com/iDiagoValeta/github-practices.git
+cp -r github-practices/github-practices <agent-skills-dir>/
+```
+
+### install.sh
+
+From a clone of this repo:
 
 ```bash
 git clone https://github.com/iDiagoValeta/github-practices.git
 cd github-practices
-./install.sh
+./install.sh AGENT...
+./install.sh --uninstall AGENT...
+./install.sh --list
 ```
 
-It creates the symlink `~/.claude/skills/github-practices` pointing to `github-practices/` in this repo. It is idempotent: if it already exists and points here, it does nothing; if something else exists at that path, it aborts without deleting it.
+`AGENT` is one of `claude-code`, `codex`, `cursor`, `gemini-cli`, `github-copilot`, `opencode`, `windsurf` or `zcode`. It creates a symlink to `github-practices/` in this repo at the user directory of the agent; `codex` targets the shared `~/.agents/skills`. `--list` prints every agent with the path it uses.
 
-OpenCode also reads `~/.claude/skills/`, so the same command works there.
+It is idempotent: if the link already exists and points here, it does nothing; if something else exists at that path, it aborts without deleting it. Several agents in one call are all processed, and the exit status is 1 if any failed. No arguments or an unknown agent print the usage on stderr and exit 2.
 
-#### Per project
-
-Copy the skill into the repo where you want to use it:
+Uninstall removes the symlink only if it points to this repo. If it points elsewhere, or the path holds a real directory or file, it aborts without touching it:
 
 ```bash
-mkdir -p .claude/skills
-cp -r /path/to/github-practices/github-practices .claude/skills/
+./install.sh --uninstall claude-code
 ```
-
-That way it is versioned with the project and available only there.
-
-#### Uninstall
-
-```bash
-./install.sh --uninstall
-```
-
-It removes the symlink only if it points to this repo. If it points elsewhere, or the path holds a real directory or file, it aborts without touching it.
 
 ## Usage
 
-In Claude Code or OpenCode:
-
-```text
-/github-practices
-```
-
-Installed as a plugin, the same skill is `/github-practices:github-practices`.
-
-Or ask in natural language: "audit this repo", "protect main", "does this branch follow the convention?", "set up the issue and PR templates".
+Invoke the skill the way your agent does, as the table above says, or ask in natural language: "audit this repo", "protect main", "does this branch follow the convention?", "set up the issue and PR templates".
 
 The flow is always the same: audit in read-only mode, present the report by severity, recommend the branching model with its reasons, apply only what is approved and re-audit. Files go on an `internal/github-practices-setup` branch with a draft PR; every remote change needs an explicit OK, showing the command and how to undo it.
 
 ## Approval gate
 
-Saying "protect main" is a request, not an approval. The agent shows the exact command and its undo, then waits for an answer. Instructions alone were not enough for some models, so the repo ships permission blocks that turn the first GitHub write into a prompt:
+Saying "protect main" is a request, not an approval. The agent shows the exact command and its undo, then waits for an answer. Instructions alone were not enough for some models, so Claude Code and OpenCode ship permission blocks that turn the first GitHub write into a prompt:
 
-- OpenCode: merge `github-practices/assets/agent-permissions/opencode.json` into the project `opencode.json` or into `~/.config/opencode/opencode.json`.
 - Claude Code: merge `github-practices/assets/agent-permissions/claude-settings.json` into `.claude/settings.json`.
+- OpenCode: merge `github-practices/assets/agent-permissions/opencode.json` into the project `opencode.json` or into `~/.config/opencode/opencode.json`.
 
-The block allows everything except the commands listed here: `gh api` with an explicit method, `gh repo edit`, label create and delete, PR merge and `git push`. In a non-interactive run the agent then stops at the first write instead of applying it.
+The block allows everything except the commands listed here: `gh api` with an explicit method, `gh repo edit`, label create and delete, PR merge and `git push`. In a non-interactive run the agent then stops at the first write instead of applying it. Other agents rely only on the gate written in `SKILL.md`, which is the weaker of the two: check that your agent asks before the first remote change.
 
 ## Structure
 
@@ -210,7 +379,7 @@ The block allows everything except the commands listed here: `gh api` with an ex
 │   ├── test_install.py             Installer and safe uninstall
 │   └── test_skill_format.py        Frontmatter, size, links and forbidden characters
 ├── .github/workflows/ci.yml        Python 3.12 tests and install.sh syntax
-├── install.sh                      Symlink installer and safe uninstaller
+├── install.sh                      Symlink installer for every agent and safe uninstaller
 ├── LICENSE
 └── README.md
 ```
@@ -222,11 +391,12 @@ python3 -m unittest discover -s tests -v
 bash -n install.sh
 ```
 
-The tests validate the audit and branch-name scripts, the format of `SKILL.md` (frontmatter, size, links and forbidden characters) and the uninstaller in temporary directories; `bash -n install.sh` checks the installer syntax. CI runs both on Python 3.12.
+The tests validate the audit and branch-name scripts, the format of `SKILL.md` (frontmatter, size, links and forbidden characters) and the installer and uninstaller in temporary directories; `bash -n install.sh` checks the installer syntax. CI runs both on Python 3.12.
 
 ## Requirements
 
-- Claude Code for the plugin install, or Node.js with `npx` for the skills CLI.
+- An agent that supports Agent Skills, such as any of the agents above.
+- Node.js 22.20 or later with `npx` for the skills CLI, or the GitHub CLI with the skill command in preview for `gh skill`.
 - Python 3, standard library only. CI tests on Python 3.12.
 - `gh` CLI authenticated (`gh auth status`) for `audit.py`. Without it the audit exits 2 and says why.
 - `git`, to read the local templates and the last commits.
