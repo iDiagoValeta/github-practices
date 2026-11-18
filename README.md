@@ -1,5 +1,7 @@
 # github-practices
 
+> **Context.** Built in October 2026 as a personal project, when I had just started as AI Engineer at Inditex, after leading a team at Auro AI. It packs the repository standards (branching, rulesets, CI, releases) I now apply with coding agents such as Claude Code and opencode into a skill any agent can run.
+
 [![CI](https://github.com/iDiagoValeta/github-practices/actions/workflows/ci.yml/badge.svg)](https://github.com/iDiagoValeta/github-practices/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 An agent skill for AI coding agents that audits a GitHub repository against best practices and applies only the changes you approve. It works in Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, OpenCode, Windsurf, ZCode and any agent that reads the open [SKILL.md format](https://agentskills.io). It is for anyone who maintains a repo and wants branch protection, templates, labels and releases set up right without reading every GitHub doc: install it, ask your agent to audit the repo and review the report.
